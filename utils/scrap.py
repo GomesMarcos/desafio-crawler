@@ -1,5 +1,6 @@
 def get_all_movies(driver):
     movies = driver.find_element("class name", "ipc-metadata-list--dividers-between")
+    movies.screenshot("movies.png")
     yield from movies.find_elements("tag name", "li")
 
 

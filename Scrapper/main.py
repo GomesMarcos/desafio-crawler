@@ -35,16 +35,12 @@ class WebScrapper:
 
             log_message("parsing content")
             sleep(self.waiting_seconds)
+
             movies = get_all_movies(self.driver)
-
-            log_message("saving snapshot")
-            movies.snapshot("movies.png")
-
             self._save_movies(movies)
 
             log_message("closing browser")
             self.driver.close()
-            # return movies
 
         except Exception as e:
             log_except(e)
@@ -57,11 +53,11 @@ class WebScrapper:
     @staticmethod
     def _save_movies(movies):
         try:
-            log_message("getting movies information")
+            log_message("saving movies information")
             with open('../movies.json', 'w') as file:
                 while movies:
                     movie = get_movie_info(next(movies))
-                    file.append(movie)
+                    file.write(f"{movie}\n")
                     print(f'\033[93m\n\nmovie: {movie} \n\n\033[0m')
         except StopIteration:
             log_message("All movies are successfully")
