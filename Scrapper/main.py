@@ -6,17 +6,20 @@ from selenium.webdriver import Firefox, FirefoxOptions
 
 sys.path.append(".")
 
+from Db.main import DbConn
 from utils import (
     SAVING_PLACES,
     URL_IMDB,
     get_all_movies,
+    get_movie_info,
     log_except,
     log_message,
+    prepare_ending_json_file,
     remove_files_if_exists,
-    save_movies_into_json,
+    save_movie_into_json,
     time_delta,
 )
-from utils.db import save_movies_into_db
+from utils.db import save_movie_into_db
 
 
 class WebScrapper:
@@ -55,10 +58,23 @@ class WebScrapper:
 
     @staticmethod
     def _save_movies(movies):
-        # if "json".lower() in SAVING_PLACES:
-        #     save_movies_into_json(movies)
-        if "db".lower() in SAVING_PLACES:
-            save_movies_into_db(movies)
+        movie_count = 0
+        conn = DbConn()
+        try:
+            while movies:
+                movie = get_movie_info(next(movies))
+                if "json".lower() in SAVING_PLACES:
+                    save_movie_into_json(movie, is_start=movie_count == 0)
+                if "db".lower() in SAVING_PLACES:
+                    save_movie_into_db(movie, conn)
+                else:
+                    conn.close()
+                movie_count += 1
+        except StopIteration:
+            if "json".lower() in SAVING_PLACES:
+                save_movie_into_json(movie, is_end=True)
+            if "db".lower() in SAVING_PLACES:
+                save_movie_into_db(movie, conn, is_end=True)
 
 
 if __name__ == "__main__":

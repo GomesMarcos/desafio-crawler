@@ -64,21 +64,20 @@ def prepare_ending_json_file(file):
     from os import SEEK_END
     file.close()
 
-    with open(file.name, "+rb") as file:
+    log_message("Handling last json object ending with comma")
+    with open(JSON_FILENAME, "+rb") as file:
         file.seek(-3, SEEK_END)
         file.write(b"}\n]")
+        log_message("All JSON movies saved successfully")
 
 
-def save_movies_into_json(movies):
-    with open(JSON_FILENAME, "w+", encoding="utf-8") as file:
-        try:
-            log_message("saving movies information")
+def save_movie_into_json(movie, is_start=False, is_end=False):
+    with open(JSON_FILENAME, "a", encoding="utf-8") as file:
+        log_message("saving movies information")
+        if is_start:
             file.write("[")
-            while movies:
-                movie = get_movie_info(next(movies))
-                json.dump(movie, file)
-                file.write(",\n")
-        except StopIteration:
-            log_message("Handling last json object ending with comma")
+        if not is_start and not is_end:
+            json.dump(movie, file)
+            file.write(",\n")
+        if is_end:
             prepare_ending_json_file(file)
-            log_message("All JSON movies saved successfully")

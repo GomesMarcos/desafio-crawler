@@ -1,6 +1,6 @@
 def query_save_movie(movie: dict):
     return f"""
-        INSERT OR IGNORE INTO movies (
+        INSERT OR IGNORE INTO movie (
             title,
             ranking,
             year,
