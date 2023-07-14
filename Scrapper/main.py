@@ -7,11 +7,14 @@ from selenium.webdriver import Firefox, FirefoxOptions
 sys.path.append(".")
 
 from utils import (
+    SAVING_PLACES,
     URL_IMDB,
     get_all_movies,
-    get_movie_info,
     log_except,
     log_message,
+    remove_files_if_exists,
+    save_movies_into_db,
+    save_movies_into_json,
     time_delta,
 )
 
@@ -52,18 +55,14 @@ class WebScrapper:
 
     @staticmethod
     def _save_movies(movies):
-        try:
-            log_message("saving movies information")
-            with open('../movies.json', 'w') as file:
-                while movies:
-                    movie = get_movie_info(next(movies))
-                    file.write(f"{movie}\n")
-                    print(f'\033[93m\n\nmovie: {movie} \n\n\033[0m')
-        except StopIteration:
-            log_message("All movies are successfully")
+        if "json".lower() in SAVING_PLACES:
+            save_movies_into_json(movies)
+        if "db".lower() in SAVING_PLACES:
+            save_movies_into_db()
 
 
 if __name__ == "__main__":
+    remove_files_if_exists()
     ws = WebScrapper()
     movies = ws.scrap_url()
     print(movies)

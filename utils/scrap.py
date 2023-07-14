@@ -1,6 +1,15 @@
+import json
+import sys
+
+
+sys.path.append(".")
+from utils import JSON_FILENAME, SCREENSHOT_FILENAME, log_message
+from utils.scrap import save_movies_into_json
+
+
 def get_all_movies(driver):
     movies = driver.find_element("class name", "ipc-metadata-list--dividers-between")
-    movies.screenshot("movies.png")
+    movies.screenshot(SCREENSHOT_FILENAME)
     yield from movies.find_elements("tag name", "li")
 
 
@@ -50,3 +59,32 @@ def get_movie_info(row):
         "imdb_rating": get_movie_imdb_ratting(row),
         "movie_details_url": get_movie_details_url(row),
     }
+
+
+def prepare_ending_json_file(file):
+    from os import SEEK_END
+    file.close()
+
+    with open(file.name, "+rb") as file:
+        file.seek(-3, SEEK_END)
+        file.write(b"}\n]")
+
+
+def save_movies_into_json(movies):
+    with open(JSON_FILENAME, "w+", encoding="utf-8") as file:
+        try:
+            log_message("saving movies information")
+            file.write("[")
+            while movies:
+                movie = get_movie_info(next(movies))
+                json.dump(movie, file)
+                file.write(",\n")
+        except StopIteration:
+            log_message("Handling last json object ending with comma")
+            prepare_ending_json_file(file)
+            log_message("All JSON movies saved successfully")
+
+
+def save_movies_into_db(movies):
+    log_message("Start saving movies into DB")
+    ...
