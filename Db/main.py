@@ -1,10 +1,21 @@
+import os.path
 import sqlite3
+import sys
+from pathlib import Path
+
+
+sys.path.append(".")
+from utils import DB_FILENAME
+
+
+BASE_DIR = str(Path(__file__).parent.parent)
+DB_PATH = os.path.join(BASE_DIR, DB_FILENAME)
 
 
 class DbConn:
 
     def __init__(self):
-        self.conn = sqlite3.connect("db.sqlite")
+        self.conn = sqlite3.connect(DB_PATH)
         self.cur = self.conn.cursor()
 
     def fetch_data(self, query: str, is_single_fetch=False):
@@ -14,15 +25,9 @@ class DbConn:
             return self.cur.fetchone(query)
         return self.cur.fetchall(query)
 
-    def save_or_update_data(self, query: str):
-        try:
-            self.cur.execute(query)
-        except Exception as e:
-            
+    def execute_and_commit_query(self, query: str):
+        self.cur.execute(query)
+        self.conn.commit()
 
-    def close_conn(self):
+    def close(self):
         self.conn.close()
-
-    def get_or_create_db(self, query: str):
-        if data:= not self.fetch_data(query, is_single_fetch=True):
-            

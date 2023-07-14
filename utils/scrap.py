@@ -28,7 +28,7 @@ def get_movie_title(row):
     return row.find_element("tag name", "h3").text.split(".")[1].strip()
 
 
-def get_movie_position(row):
+def get_movie_ranking(row):
     return row.find_element("tag name", "h3").text.split(".")[0].strip()
 
 
@@ -50,7 +50,7 @@ def get_movie_age_rating(row):
 def get_movie_info(row):
     return {
         "title": get_movie_title(row),
-        "position": get_movie_position(row),
+        "ranking": get_movie_ranking(row),
         "year": get_movie_year(row),
         "duration": get_movie_duration(row),
         "age_rating": get_movie_age_rating(row),
@@ -82,8 +82,3 @@ def save_movies_into_json(movies):
             log_message("Handling last json object ending with comma")
             prepare_ending_json_file(file)
             log_message("All JSON movies saved successfully")
-
-
-def save_movies_into_db(movies):
-    log_message("Start saving movies into DB")
-    ...

@@ -13,10 +13,10 @@ from utils import (
     log_except,
     log_message,
     remove_files_if_exists,
-    save_movies_into_db,
     save_movies_into_json,
     time_delta,
 )
+from utils.db import save_movies_into_db
 
 
 class WebScrapper:
@@ -55,8 +55,8 @@ class WebScrapper:
 
     @staticmethod
     def _save_movies(movies):
-        if "json".lower() in SAVING_PLACES:
-            save_movies_into_json(movies)
+        # if "json".lower() in SAVING_PLACES:
+        #     save_movies_into_json(movies)
         if "db".lower() in SAVING_PLACES:
             save_movies_into_db(movies)
 
