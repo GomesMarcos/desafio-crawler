@@ -58,7 +58,7 @@ class WebScrapper:
         if "json".lower() in SAVING_PLACES:
             save_movies_into_json(movies)
         if "db".lower() in SAVING_PLACES:
-            save_movies_into_db()
+            save_movies_into_db(movies)
 
 
 if __name__ == "__main__":

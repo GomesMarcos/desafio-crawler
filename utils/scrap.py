@@ -4,7 +4,6 @@ import sys
 
 sys.path.append(".")
 from utils import JSON_FILENAME, SCREENSHOT_FILENAME, log_message
-from utils.scrap import save_movies_into_json
 
 
 def get_all_movies(driver):
