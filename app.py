@@ -1,7 +1,9 @@
-## Good Luck!!
+from Scrapper.main import run
+
 
 def main():
-    print("Hello world!")
+    run()
+
 
 if __name__ == "__main__":
     main()

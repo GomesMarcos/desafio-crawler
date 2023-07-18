@@ -1,8 +1,7 @@
 import sys
 from time import sleep
 
-from selenium.webdriver import Firefox, FirefoxOptions
-
+from selenium import webdriver
 
 sys.path.append(".")
 
@@ -14,7 +13,6 @@ from utils import (
     get_movie_info,
     log_except,
     log_message,
-    prepare_ending_json_file,
     remove_files_if_exists,
     save_movie_into_json,
     time_delta,
@@ -30,7 +28,7 @@ class WebScrapper:
     def __init__(self, url=""):
         self.url = url or URL_IMDB
         self.options = self._set_options()
-        self.driver = Firefox(options=self.options)
+        self.driver = webdriver.Firefox(options=self.options)
         self.waiting_seconds = 2
 
     @time_delta
@@ -41,8 +39,9 @@ class WebScrapper:
 
             log_message("parsing content")
             sleep(self.waiting_seconds)
-
             movies = get_all_movies(self.driver)
+
+            log_message("saving movies information")
             self._save_movies(movies)
 
             log_message("closing browser")
@@ -52,8 +51,9 @@ class WebScrapper:
             log_except(e)
 
     def _set_options(self):
-        options = FirefoxOptions()
-        options.add_argument("--headless")
+        options = webdriver.firefox.options.Options()
+        options.log.level = "trace"
+        options.headless = True
         return options
 
     @staticmethod
@@ -77,7 +77,8 @@ class WebScrapper:
                 save_movie_into_db(movie, conn, is_end=True)
 
 
-if __name__ == "__main__":
+def run():
+    log_message("Cleaning files")
     remove_files_if_exists()
     ws = WebScrapper()
     movies = ws.scrap_url()
