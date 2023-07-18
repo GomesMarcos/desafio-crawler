@@ -1,50 +1,44 @@
-# beeMôn:
+# Desafio Crawler:
 
-Na beeMôn criamos muitos sistemas de raspagem de dados e buscamos todos os dias inovação na analise dos dados. Este desafio esta aberto para todos que quiserem abrir um fork e submeter suas ideias de tecnologia.
+## Intro
+Fui desafiado a criar um projeto de raspagem de dados.
+Por gostar de filmes e ser uma página gerada por JS, o que aumenta o nível de complexidade, escolhi a opção: [imdb.com](https://www.imdb.com/chart/top/?ref_=nv_mv_250)
 
-## Desafio:
-Escolher uma dos sites abaixo para fazer o desafio
+### Dependências:
 
-- [quotes.toscrape](https://quotes.toscrape.com/)
-- [imdb.com](https://www.imdb.com/chart/top/?ref_=nv_mv_250)
+- Local: 
+  - Python 3.11
+  - venv / virtualenv / etc.
+  - Navegador Firefox
+  - Ter um prova da consulta (Screenshot)
+- Conteinerizado:
+  - docker
+  - docker-compose
 
-### Minimo Entregável:
+### Instalação:
+- Local:
+  - `$ python3 -m venv venv`
+  - `$ source venv/bin/activate`
+  - `$ pip install -r requirements.txt`
+    - `$ pip install -r requirements-dev.txt` (opcional: caso queira instalar as dependências de desenvolvimento utilizadas neste projeto)
+<br>
+- Containerizado:
+  - `$ docker-compose up -d`
 
-- Buscar dados de forma automatizada(script de linha de comando ou interface clicavel)
-- Padronizar os retornos de forma estruturada (json/csv)
-- Sistema de logs de para acompanhamento da execução
-- Ter um prova da consulta (Screenshot)
+### Execução do projeto:
+- Local:
+  - Certifiqe-se de que a venv está ativa `$ source venv/bin/activate`
+  - `$ python app.py`
 
-### Pontos Extra para:
+- Containerizado:
+  - Certifiqe-se de que os containeres estão rodando `$ docker-compose up -d`
+ - `$ docker exec -it desafio-crawler-app-1 bash`
+ - `# python app.py`
 
-- Armazenamento dos resultados em um banco relacional ou não relacional
-- fazer um dataframe que possibilite visualizar os resultados via pandas
-- Trazer resultados de forma dinamica sem fixar caminhos no `xpath`
-- Dockerizar a aplicação
-- Conseguir agendar uma execução para um dia e horario.
-
-### Libs sugeridas:
-
- - Selenium 
- - Scrapy
- - Pandas
- - Requests
- - BeautifulSoup 
-
-
-### O que iremos avaliar:
-
-- Conhecimento em HTML
-- Conhecimento em fluxo de request/response
-- Conhecimento em extração de dados
-- Conhecimento em base64
-- Boas práticas de programação
-- Utilização de bibliotecas de terceiros
-- Documentação
-- Criatividade
-- Cobertura de testes
-- Tempo de execução do código
-- Versionamento do código
-
+### Arquivos gerados na execução:
+- db.sqlite3 -> armazena os dados em banco relacional
+- movies.json -> armazena os dados em arquivo .json
+- screenshot.b64 -> screenshot no formato <i> base64</i> dos filmes.
+- movies.png -> screenshot dos filmes a partir da execução `$ python convert_to_png.py`.
 
 
