@@ -4,12 +4,12 @@ import sys
 from selenium.webdriver.common.by import By
 
 sys.path.append(".")
-from utils import JSON_FILENAME, SCREENSHOT_FILENAME, log_message
+from utils import JSON_FILENAME, SCREENSHOT_B64_FILENAME, log_message
 
 
 def get_all_movies(driver):
     movies = driver.find_element(By.CLASS_NAME, "ipc-metadata-list--dividers-between")
-    movies.screenshot(SCREENSHOT_FILENAME)
+    save_screenshot_as_base64(movies.screenshot_as_base64)
     yield from movies.find_elements(By.TAG_NAME, "li")
 
 
@@ -81,3 +81,8 @@ def save_movie_into_json(movie, is_start=False, is_end=False):
             file.write(",\n")
         if is_end:
             prepare_ending_json_file(file)
+
+
+def save_screenshot_as_base64(text: str):
+    with open(SCREENSHOT_B64_FILENAME, "w") as file:
+        file.write(text)

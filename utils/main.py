@@ -1,8 +1,8 @@
 from time import time
 
-
 URL_IMDB = "https://www.imdb.com/chart/top/?ref_=nv_mv_250"
 SCREENSHOT_FILENAME = "movies.png"
+SCREENSHOT_B64_FILENAME = "screenshot.b64"
 JSON_FILENAME = "movies.json"
 DB_FILENAME = "db.sqlite3"
 SAVING_PLACES = ["db", "json"]
@@ -23,7 +23,8 @@ def time_delta(func):
 
 def remove_files_if_exists():
     import os
-    for file in [SCREENSHOT_FILENAME, JSON_FILENAME, DB_FILENAME]:
+    
+    for file in [SCREENSHOT_FILENAME, JSON_FILENAME, DB_FILENAME, SCREENSHOT_B64_FILENAME, "geckodriver.log"]:
         if os.path.exists(file):
             os.remove(file)
 
